@@ -6,9 +6,9 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { guest_name, guest_count, response_status } = req.body || {};
+    const { guest_name, phone, guest_count, response_status } = req.body || {};
 
-    if (!guest_name || !response_status) {
+    if (!guest_name || !phone || !response_status) {
       return res.status(400).json({ error: 'Données manquantes' });
     }
 
@@ -16,23 +16,29 @@ module.exports = async function handler(req, res) {
       ? Number(guest_count)
       : 1;
 
+    const normalizedPhone = String(phone).trim();
+
     const supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
-    const { error: insertError } = await supabase
+    const { error: upsertError } = await supabase
       .from('rsvp')
-      .insert([
-        {
-          guest_name,
-          guest_count: count,
-          response_status
-        }
-      ]);
+      .upsert(
+        [
+          {
+            guest_name,
+            phone: normalizedPhone,
+            guest_count: count,
+            response_status
+          }
+        ],
+        { onConflict: 'phone' }
+      );
 
-    if (insertError) {
-      return res.status(500).json({ error: insertError.message });
+    if (upsertError) {
+      return res.status(500).json({ error: upsertError.message });
     }
 
     const { data: rows, error: readError } = await supabase

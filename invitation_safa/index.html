@@ -782,14 +782,15 @@
 
     <div id="rsvp-form-wrapper">
       <form class="rsvp-form" onsubmit="submitRSVP(event)">
-        <input class="rsvp-input" type="text" id="rsvp-name" placeholder="Votre prénom & nom" required>
-        <input class="rsvp-input" type="number" id="rsvp-guests" placeholder="Nombre de personnes" min="1" max="10">
-        <div class="rsvp-choices">
-          <button type="button" class="rsvp-choice" id="btn-yes" onclick="selectRSVP('yes')">✓ Je serai là</button>
-          <button type="button" class="rsvp-choice" id="btn-no" onclick="selectRSVP('no')">✗ Absent(e)</button>
-        </div>
-        <button type="submit" class="rsvp-btn">ENVOYER MA RÉPONSE</button>
-      </form>
+  <input class="rsvp-input" type="text" id="rsvp-name" placeholder="Votre prénom & nom" required>
+  <input class="rsvp-input" type="tel" id="rsvp-phone" placeholder="Votre numéro de téléphone" required>
+  <input class="rsvp-input" type="number" id="rsvp-guests" placeholder="Nombre de personnes" min="1" max="10">
+  <div class="rsvp-choices">
+    <button type="button" class="rsvp-choice" id="btn-yes" onclick="selectRSVP('yes')">✓ Je serai là</button>
+    <button type="button" class="rsvp-choice" id="btn-no" onclick="selectRSVP('no')">✗ Absent(e)</button>
+  </div>
+  <button type="submit" class="rsvp-btn">ENVOYER MA RÉPONSE</button>
+</form>
     </div>
     <div class="rsvp-success" id="rsvp-success">
       <div class="success-icon" id="success-icon">🌹</div>
@@ -981,11 +982,12 @@ async function submitRSVP(e) {
   e.preventDefault();
 
   const name = document.getElementById('rsvp-name').value.trim();
+  const phone = document.getElementById('rsvp-phone').value.trim();
   const guestsValue = document.getElementById('rsvp-guests').value;
   const guests = guestsValue ? parseInt(guestsValue, 10) : 1;
 
-  if (!name || !rsvpChoice) {
-    alert('Merci de remplir votre nom et de choisir votre réponse 💌');
+  if (!name || !phone || !rsvpChoice) {
+    alert('Merci de remplir votre nom, votre numéro et de choisir votre réponse 💌');
     return;
   }
 
@@ -997,6 +999,7 @@ async function submitRSVP(e) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         guest_name: name,
+        phone: phone,
         guest_count: guests,
         response_status: responseStatus
       })
@@ -1011,6 +1014,7 @@ async function submitRSVP(e) {
     await emailjs.send("service_yah183u", "template_txwiexg", {
       to_email: "zeinebboujmil0@gmail.com",
       guest_name: name,
+      guest_phone: phone,
       guest_count: guests,
       total_accepted: result.totalAccepted,
       response_status: responseStatus
@@ -1037,7 +1041,6 @@ async function submitRSVP(e) {
     console.error(error);
   }
 }
-
 // ── MAPS ──
 function openMaps(q) {
   window.open('https://maps.google.com/?q=' + q, '_blank');
