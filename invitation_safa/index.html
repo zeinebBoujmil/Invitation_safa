@@ -2,7 +2,6 @@
 <html lang="fr">
 
 <head>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -807,7 +806,6 @@
 
 <script>
 // ── INIT ──
-emailjs.init("bXat7LZtS9f-2hjuy");
 
 
 // Custom cursor
@@ -968,7 +966,6 @@ function initScrollReveal() {
 
 // ── RSVP ──
 let rsvpChoice = null;
-let totalAccepted = 0;
 
 function selectRSVP(val) {
   rsvpChoice = val;
@@ -977,7 +974,7 @@ function selectRSVP(val) {
   document.getElementById('btn-no').classList.toggle('decline-sel', val === 'no');
 }
 
-function submitRSVP(e) {
+async function submitRSVP(e) {
   e.preventDefault();
 
   const name = document.getElementById('rsvp-name').value.trim();
@@ -989,47 +986,43 @@ function submitRSVP(e) {
     return;
   }
 
-  if (rsvpChoice === 'yes') {
-    totalAccepted += guests;
+  const responseStatus = rsvpChoice === 'yes' ? 'Présent' : 'Absent';
 
-    emailjs.send("service_yah183u", "template_txwiexg", {
-      to_email: "zeinebboujmil0@gmail.com",
-      guest_name: name,
-      guest_count: guests,
-      total_accepted: totalAccepted,
-      response_status: "Présent"
-    }).then(() => {
-      console.log("Email envoyé");
-    }).catch((error) => {
-      console.error("Erreur email :", error);
+  try {
+    const response = await fetch('/api/rsvp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        guest_name: name,
+        guest_count: guests,
+        response_status: responseStatus
+      })
     });
-  } else {
-    emailjs.send("service_yah183u", "template_txwiexg", {
-      to_email: "zeinebboujmil0@gmail.com",
-      guest_name: name,
-      guest_count: guests,
-      total_accepted: totalAccepted,
-      response_status: "Absent"
-    }).then(() => {
-      console.log("Email envoyé");
-    }).catch((error) => {
-      console.error("Erreur email :", error);
-    });
-  }
 
-  document.getElementById('rsvp-form-wrapper').style.display = 'none';
-  const success = document.getElementById('rsvp-success');
-  success.classList.add('show');
+    const result = await response.json();
 
-  if (rsvpChoice === 'yes') {
-    document.getElementById('success-icon').textContent = '🥂';
-    document.getElementById('success-msg').textContent = `À bientôt, ${name} !`;
-    document.getElementById('success-sub').textContent = 'Nous sommes ravis de vous accueillir en ce beau jour 🌹';
-    confettiBurst();
-  } else {
-    document.getElementById('success-icon').textContent = '💌';
-    document.getElementById('success-msg').textContent = `Merci, ${name}`;
-    document.getElementById('success-sub').textContent = 'Vous nous manquerez… Merci pour votre réponse.';
+    if (!response.ok) {
+      throw new Error(result.error || 'Erreur pendant l’enregistrement');
+    }
+
+    document.getElementById('rsvp-form-wrapper').style.display = 'none';
+    const success = document.getElementById('rsvp-success');
+    success.classList.add('show');
+
+    if (rsvpChoice === 'yes') {
+      document.getElementById('success-icon').textContent = '🥂';
+      document.getElementById('success-msg').textContent = `À bientôt, ${name} !`;
+      document.getElementById('success-sub').textContent =
+        `Nous sommes ravis de vous accueillir 🌹 Total confirmé actuel : ${result.totalAccepted}`;
+      confettiBurst();
+    } else {
+      document.getElementById('success-icon').textContent = '💌';
+      document.getElementById('success-msg').textContent = `Merci, ${name}`;
+      document.getElementById('success-sub').textContent =
+        'Vous nous manquerez… Merci pour votre réponse.';
+    }
+  } catch (error) {
+    alert(error.message || 'Une erreur est survenue');
   }
 }
 // ── MAPS ──
