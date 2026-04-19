@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mohamed & Safa — Mariage</title>
@@ -212,20 +215,7 @@
     100% { opacity: 0; transform: translateY(100vh) rotate(720deg) translateX(40px); }
   }
 
-  /* ─── HERO ─── */
-  .hero {
-    text-align: center;
-    padding: 70px 20px 40px;
-    position: relative;
-  }
-  .hero::before {
-    content: '✦';
-    display: block;
-    color: var(--gold);
-    font-size: 18px;
-    margin-bottom: 16px;
-    opacity: 0.6;
-  }
+ 
   .hero-sub {
     font-family: 'Cinzel', serif;
     font-size: 10.5px;
@@ -808,22 +798,6 @@
     </div>
   </div>
 
-  <!-- SHARE -->
-  <div class="card reveal" style="text-align:center; cursor:default;">
-    <span class="card-icon">💌</span>
-    <div class="card-title">Partagez ce lien</div>
-    <div style="margin:12px 0; font-style:italic; color:var(--deep); font-size:15px; opacity:0.8;">
-      Copiez ce lien et envoyez-le à vos proches
-    </div>
-    <div style="display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap;">
-      <input id="share-url" readonly style="flex:1;min-width:180px;max-width:300px;padding:10px 14px;border:1px solid rgba(184,150,90,0.3);background:var(--blush);font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--deep);border-radius:2px;outline:none;" value="Votre lien ici…">
-      <button onclick="copyLink()" style="padding:10px 20px;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:white;border:none;font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;cursor:pointer;border-radius:2px;">COPIER</button>
-    </div>
-    <div style="display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap;">
-      <button onclick="shareWhatsApp()" style="padding:9px 18px;background:#25d366;color:white;border:none;font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;cursor:pointer;border-radius:2px;">📱 WhatsApp</button>
-      <button onclick="shareNative()" style="padding:9px 18px;background:var(--deep);color:white;border:none;font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;cursor:pointer;border-radius:2px;">⬆ Partager</button>
-    </div>
-  </div>
 
   <div class="footer">
     <em>Mohamed & Safa</em><br>
@@ -833,7 +807,8 @@
 
 <script>
 // ── INIT ──
-document.getElementById('share-url').value = window.location.href;
+emailjs.init("bXat7LZtS9f-2hjuy");
+
 
 // Custom cursor
 const cursor = document.getElementById('cursor');
@@ -993,24 +968,59 @@ function initScrollReveal() {
 
 // ── RSVP ──
 let rsvpChoice = null;
+let totalAccepted = 0;
+
 function selectRSVP(val) {
   rsvpChoice = val;
-  document.getElementById('btn-yes').classList.toggle('selected', val==='yes');
+  document.getElementById('btn-yes').classList.toggle('selected', val === 'yes');
   document.getElementById('btn-no').classList.toggle('selected', false);
-  document.getElementById('btn-no').classList.toggle('decline-sel', val==='no');
-  document.getElementById('btn-yes').classList.toggle('selected', val==='yes');
+  document.getElementById('btn-no').classList.toggle('decline-sel', val === 'no');
 }
 
 function submitRSVP(e) {
   e.preventDefault();
+
   const name = document.getElementById('rsvp-name').value.trim();
+  const guestsValue = document.getElementById('rsvp-guests').value;
+  const guests = guestsValue ? parseInt(guestsValue, 10) : 1;
+
   if (!name || !rsvpChoice) {
     alert('Merci de remplir votre nom et de choisir votre réponse 💌');
     return;
   }
+
+  if (rsvpChoice === 'yes') {
+    totalAccepted += guests;
+
+    emailjs.send("service_yah183u", "template_txwiexg", {
+      to_email: "zeinebboujmil0@gmail.com",
+      guest_name: name,
+      guest_count: guests,
+      total_accepted: totalAccepted,
+      response_status: "Présent"
+    }).then(() => {
+      console.log("Email envoyé");
+    }).catch((error) => {
+      console.error("Erreur email :", error);
+    });
+  } else {
+    emailjs.send("service_yah183u", "template_txwiexg", {
+      to_email: "zeinebboujmil0@gmail.com",
+      guest_name: name,
+      guest_count: guests,
+      total_accepted: totalAccepted,
+      response_status: "Absent"
+    }).then(() => {
+      console.log("Email envoyé");
+    }).catch((error) => {
+      console.error("Erreur email :", error);
+    });
+  }
+
   document.getElementById('rsvp-form-wrapper').style.display = 'none';
   const success = document.getElementById('rsvp-success');
   success.classList.add('show');
+
   if (rsvpChoice === 'yes') {
     document.getElementById('success-icon').textContent = '🥂';
     document.getElementById('success-msg').textContent = `À bientôt, ${name} !`;
@@ -1022,7 +1032,6 @@ function submitRSVP(e) {
     document.getElementById('success-sub').textContent = 'Vous nous manquerez… Merci pour votre réponse.';
   }
 }
-
 // ── MAPS ──
 function openMaps(q) {
   window.open('https://maps.google.com/?q=' + q, '_blank');
