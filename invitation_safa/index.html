@@ -148,22 +148,23 @@
     50% { transform: scale(1.04); box-shadow: 0 0 0 8px #fdf3ec, 0 0 0 14px var(--gold-light), 0 28px 80px rgba(184,150,90,0.5); }
   }
 
-  .seal-label {
-    font-family: 'Cinzel', serif;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: var(--rose);
-    text-transform: uppercase;
-    animation: fadeInUp 1s ease 0.5s both;
-  }
-  .seal-hint {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    color: var(--deep);
-    font-size: 17px;
-    opacity: 0.7;
-    animation: fadeInUp 1s ease 0.8s both;
-  }
+.seal-label {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 4px;
+  color: #b07a63; /* plus foncé */
+  text-transform: uppercase;
+  animation: fadeInUp 1s ease 0.5s both;
+}
+
+.seal-hint {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: #6b4b3e; /* plus foncé */
+  font-size: 17px;
+  opacity: 1; /* au lieu de 0.7 */
+  animation: fadeInUp 1s ease 0.8s both;
+}
   .wax-drip {
     position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%);
     width: 24px; height: 20px;
@@ -655,7 +656,7 @@
 <!-- ══════════ SEAL SCREEN ══════════ -->
 <div id="seal-screen">
   <div class="seal-wrapper">
-    <div style="font-family:'Cinzel',serif; font-size:11px; letter-spacing:5px; color:var(--rose); text-transform:uppercase; opacity:0.8;">
+    <div style="font-family:'Cinzel',serif; font-size:11px; letter-spacing:5px; color:#b07a63; text-transform:uppercase; opacity:1;">
       Une invitation vous attend
     </div>
     <div style="position:relative;">
