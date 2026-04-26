@@ -16,29 +16,34 @@ module.exports = async function handler(req, res) {
       ? Number(guest_count)
       : 1;
 
-    const normalizedPhone = String(phone).trim();
+    const normalizedPhone = String(phone).trim().replace(/\s+/g, '');
 
     const supabase = createClient(
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
 
-    const { error: upsertError } = await supabase
+    const { error: insertError } = await supabase
       .from('rsvp')
-      .upsert(
-        [
-          {
-            guest_name,
-            phone: normalizedPhone,
-            guest_count: count,
-            response_status
-          }
-        ],
-        { onConflict: 'phone' }
-      );
+      .insert([
+        {
+          guest_name,
+          phone: normalizedPhone,
+          guest_count: count,
+          response_status
+        }
+      ]);
 
-    if (upsertError) {
-      return res.status(500).json({ error: upsertError.message });
+    if (insertError) {
+      if (insertError.code === '23505') {
+        return res.status(409).json({
+          error: 'Une réponse a déjà été enregistrée avec ce numéro 💌'
+        });
+      }
+
+      return res.status(500).json({
+        error: insertError.message
+      });
     }
 
     const { data: rows, error: readError } = await supabase
