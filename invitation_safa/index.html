@@ -366,18 +366,23 @@
   }
 
   /* ─── CARDS ─── */
-/* ─── EVENT CARDS RELOOKÉES ─── */
+/* ─── EVENT CARDS RELOOKÉES CENTRÉES ─── */
 .card {
   background: linear-gradient(145deg, rgba(253,248,245,0.98), rgba(250,238,232,0.92));
   border: 1px solid rgba(184,150,90,0.22);
   border-radius: 22px;
   padding: 34px 28px;
-  margin: 22px 0;
+  margin: 22px auto;
   position: relative;
   overflow: hidden;
   cursor: pointer;
   box-shadow: 0 16px 45px rgba(92,61,46,0.08);
   transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card::before {
@@ -415,7 +420,7 @@
   align-items: center;
   justify-content: center;
   font-size: 24px;
-  margin-bottom: 18px;
+  margin: 0 auto 18px;
 }
 
 .card-title {
@@ -425,6 +430,8 @@
   color: var(--gold);
   text-transform: uppercase;
   margin-bottom: 12px;
+  text-align: center;
+  width: 100%;
 }
 
 .card-body {
@@ -432,7 +439,8 @@
   line-height: 1.55;
   color: var(--deep);
   margin-bottom: 10px;
-   text-align: center; 
+  text-align: center;
+  width: 100%;
 }
 
 .card-body strong {
@@ -446,14 +454,15 @@
   opacity: 0.78;
   line-height: 1.7;
   margin-bottom: 18px;
+  text-align: center;
+  width: 100%;
 }
 
 .card-time-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-top: 4px;
-  margin-bottom: 16px;
+  margin: 4px auto 16px;
   background: linear-gradient(135deg, var(--gold), var(--gold-light));
   color: white;
   padding: 8px 22px;
@@ -463,16 +472,16 @@
   border-radius: 999px;
   font-weight: 600;
   box-shadow: 0 8px 22px rgba(184,150,90,0.28);
-    margin: 4px auto 16px; 
   text-align: center;
+  width: fit-content;
 }
 
 .map-btn {
-  display: flex; /* CHANGÉ */
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin: 0 auto; /* AJOUTÉ */
+  margin: 0 auto;
   padding: 10px 22px;
   border: 1px solid rgba(184,150,90,0.7);
   color: var(--gold);
@@ -483,7 +492,8 @@
   text-decoration: none;
   transition: all 0.3s ease;
   border-radius: 999px;
-  width: fit-content; /* AJOUTÉ */
+  width: fit-content;
+  max-width: 100%;
 }
 
 .map-btn:hover {
@@ -494,7 +504,10 @@
 }
 
 @media (max-width: 480px) {
-
+  .card {
+    padding: 30px 22px;
+    border-radius: 18px;
+  }
 
   .card::before {
     border-radius: 14px;
@@ -504,23 +517,12 @@
     font-size: 18px;
   }
 
-
-   .card {
-    text-align: center;
-  }
-
-  .card-icon {
-    margin: 0 auto 18px;
-  }
-
   .card-time-badge {
-    margin-left: auto;
-    margin-right: auto;
+    font-size: 10px;
+    padding: 8px 16px;
   }
 
   .map-btn {
-    margin-left: auto;
-    margin-right: auto;
     width: 100%;
     max-width: 320px;
   }
