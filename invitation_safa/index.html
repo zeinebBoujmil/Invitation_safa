@@ -432,6 +432,7 @@
   line-height: 1.55;
   color: var(--deep);
   margin-bottom: 10px;
+   text-align: center; 
 }
 
 .card-body strong {
@@ -462,14 +463,16 @@
   border-radius: 999px;
   font-weight: 600;
   box-shadow: 0 8px 22px rgba(184,150,90,0.28);
+    margin: 4px auto 16px; 
+  text-align: center;
 }
 
 .map-btn {
-  display: inline-flex;
+  display: flex; /* CHANGÉ */
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 0;
+  margin: 0 auto; /* AJOUTÉ */
   padding: 10px 22px;
   border: 1px solid rgba(184,150,90,0.7);
   color: var(--gold);
@@ -480,6 +483,7 @@
   text-decoration: none;
   transition: all 0.3s ease;
   border-radius: 999px;
+  width: fit-content; /* AJOUTÉ */
 }
 
 .map-btn:hover {
@@ -490,10 +494,7 @@
 }
 
 @media (max-width: 480px) {
-  .card {
-    padding: 30px 22px;
-    border-radius: 18px;
-  }
+
 
   .card::before {
     border-radius: 14px;
@@ -503,13 +504,25 @@
     font-size: 18px;
   }
 
+
+   .card {
+    text-align: center;
+  }
+
+  .card-icon {
+    margin: 0 auto 18px;
+  }
+
   .card-time-badge {
-    font-size: 10px;
-    padding: 8px 16px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .map-btn {
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
+    max-width: 320px;
   }
 }
   /* ─── RSVP ─── */
