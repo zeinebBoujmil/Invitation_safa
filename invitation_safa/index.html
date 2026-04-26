@@ -633,6 +633,146 @@
     .countdown-item { min-width: 56px; }
     .hero-name, .hero-name2 { font-size: 68px; }
   }
+
+  /* ─── PROGRAMME RELOOKÉ ─── */
+.program-card {
+  background: linear-gradient(135deg, rgba(253,248,245,0.98), rgba(245,230,224,0.95));
+  border: 1px solid rgba(184,150,90,0.22);
+  border-radius: 18px;
+  padding: 34px 26px;
+  margin: 18px 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(184,150,90,0.08);
+}
+
+.program-card::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(184,150,90,0.12);
+  border-radius: 14px;
+  pointer-events: none;
+}
+
+.program-top {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.program-icon {
+  font-size: 30px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.program-title {
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.program-subtitle {
+  font-size: 16px;
+  font-style: italic;
+  color: var(--deep);
+  opacity: 0.8;
+}
+
+.program-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 12px;
+}
+
+.program-timeline::before {
+  content: "";
+  position: absolute;
+  left: 24px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold-light), rgba(201,148,122,0.3));
+}
+
+.program-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.program-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  box-shadow: 0 0 0 5px rgba(184,150,90,0.14);
+  margin-top: 12px;
+  margin-left: 17px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.program-content {
+  flex: 1;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(184,150,90,0.16);
+  border-radius: 14px;
+  padding: 14px 16px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.program-item:hover .program-content {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(184,150,90,0.12);
+}
+
+.program-time {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  color: var(--rose);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.program-text {
+  font-size: 16px;
+  color: var(--deep);
+  line-height: 1.5;
+}
+
+.program-text strong {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .program-card {
+    padding: 28px 18px;
+  }
+
+  .program-timeline::before {
+    left: 18px;
+  }
+
+  .program-dot {
+    margin-left: 11px;
+  }
+
+  .program-content {
+    padding: 12px 14px;
+  }
+
+  .program-text {
+    font-size: 15px;
+  }
+}
 </style>
 </head>
 <body>
@@ -749,31 +889,48 @@
   </div>
 
   <!-- PROGRAMME -->
-  <div class="card reveal" style="cursor:default;">
-    <span class="card-icon">💐</span>
-    <div class="card-title">Programme de la journée</div>
-    <div style="display:flex; flex-direction:column; gap:12px; margin-top:12px;">
-      <div style="display:flex;align-items:center;gap:16px;">
-        <span style="font-family:'Cinzel',serif;color:var(--gold);font-size:13px;min-width:48px;">15:00</span>
-        <span style="font-size:15px;color:var(--deep);">Cérémonie civile à la Mairie</span>
+ <!-- PROGRAMME -->
+<div class="program-card reveal" style="cursor:default;">
+  <div class="program-top">
+    <span class="program-icon">💐</span>
+    <div class="program-title">Programme de la journée</div>
+    <div class="program-subtitle">Les beaux moments qui nous attendent</div>
+  </div>
+
+  <div class="program-timeline">
+    <div class="program-item">
+      <div class="program-dot"></div>
+      <div class="program-content">
+        <div class="program-time">15:00</div>
+        <div class="program-text"><strong>Cérémonie civile</strong> à la Mairie</div>
       </div>
-      <div style="width:1px;height:20px;background:linear-gradient(to bottom,var(--gold-light),transparent);margin-left:23px;"></div>
-      <div style="display:flex;align-items:center;gap:16px;">
-        <span style="font-family:'Cinzel',serif;color:var(--gold);font-size:13px;min-width:48px;">19:30</span>
-        <span style="font-size:15px;color:var(--deep);">Ouverture de la réception</span>
+    </div>
+
+    <div class="program-item">
+      <div class="program-dot"></div>
+      <div class="program-content">
+        <div class="program-time">19:30</div>
+        <div class="program-text"><strong>Ouverture de la réception</strong> et accueil des invités</div>
       </div>
-      <div style="width:1px;height:20px;background:linear-gradient(to bottom,var(--gold-light),transparent);margin-left:23px;"></div>
-      <div style="display:flex;align-items:center;gap:16px;">
-        <span style="font-family:'Cinzel',serif;color:var(--gold);font-size:13px;min-width:48px;">20:30</span>
-        <span style="font-size:15px;color:var(--deep);">Dîner & musique</span>
+    </div>
+
+    <div class="program-item">
+      <div class="program-dot"></div>
+      <div class="program-content">
+        <div class="program-time">20:30</div>
+        <div class="program-text"><strong>Dîner</strong> & musique dans une ambiance festive</div>
       </div>
-      <div style="width:1px;height:20px;background:linear-gradient(to bottom,var(--gold-light),transparent);margin-left:23px;"></div>
-      <div style="display:flex;align-items:center;gap:16px;">
-        <span style="font-family:'Cinzel',serif;color:var(--gold);font-size:13px;min-width:48px;">23:00</span>
-        <span style="font-size:15px;color:var(--deep);">Soirée dansante 🎶</span>
+    </div>
+
+    <div class="program-item">
+      <div class="program-dot"></div>
+      <div class="program-content">
+        <div class="program-time">23:00</div>
+        <div class="program-text"><strong>Soirée dansante</strong> jusqu’à l’aube 🎶</div>
       </div>
     </div>
   </div>
+</div>
 
   <!-- RSVP -->
   <div class="rsvp-section reveal">
