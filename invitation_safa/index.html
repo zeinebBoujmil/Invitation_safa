@@ -1257,10 +1257,10 @@ async function submitRSVP(e) {
     success.classList.add('show');
 
     if (rsvpChoice === 'yes') {
-      document.getElementById('success-icon').textContent = '🥂';
+      document.getElementById('success-icon').textContent = '💌';
       document.getElementById('success-msg').textContent = `À bientôt, ${name} !`;
       document.getElementById('success-sub').textContent =
-        `Nous sommes ravis de vous accueillir 🌹 Total confirmé actuel : ${result.totalAccepted}`;
+        `Nous sommes ravis de vous accueillir 🌹`;
       confettiBurst();
     } else {
       document.getElementById('success-icon').textContent = '💌';
