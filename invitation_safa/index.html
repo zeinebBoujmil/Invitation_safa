@@ -874,7 +874,7 @@
 <!-- Music player -->
 <div class="music-player" id="musicBtn" title="Ambiance musicale">🎵</div>
 <audio id="bgMusic" loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+<source src="paulyudin-piano-piano-music-508963.mp3" type="audio/mpeg">
 </audio>
 
 <!-- ══════════ SEAL SCREEN ══════════ -->
@@ -1112,6 +1112,14 @@ document.getElementById('sealBtn').addEventListener('click', () => {
           initScrollReveal();
           startCountdown();
           launchMainPetals();
+
+          bgMusic.play().then(() => {
+            musicBtn.textContent = '🎶';
+            musicBtn.classList.add('playing');
+            playing = true;
+          }).catch(() => {
+            console.log("La musique est bloquée par le navigateur.");
+          });
         }, 600);
       }, 250);
     }, 150);
